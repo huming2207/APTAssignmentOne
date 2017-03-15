@@ -4,9 +4,10 @@
 #include "helpers.h"
 #include "game.h"
 
-#define STUDENT_NAME "XXX YYY"
-#define STUDENT_ID "s1234567"
-#define STUDENT_EMAIL "s1234567@student.rmit.edu.au"
+
+#define STUDENT_NAME "Ming Hu"
+#define STUDENT_ID "s3554025"
+#define STUDENT_EMAIL "s3554025@student.rmit.edu.au"
 
 /**
  * Main menu option 2 - show your student information as per the specification.
@@ -15,5 +16,16 @@
  * them when printing.
  */
 void showStudentInformation();
+
+/**
+ * Show the main menu
+ *
+ */
+void mainMenu();
+
+/**
+ * Show the help message before entering the main game
+ */
+void helpMessageBeforeGame();
 
 #endif

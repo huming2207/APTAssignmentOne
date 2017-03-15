@@ -54,5 +54,27 @@ PlayerMove movePlayerForward(Cell board[BOARD_HEIGHT][BOARD_WIDTH],
 
 void displayBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player)
 {
-    /* TODO */
+
+}
+
+void displayEmptyBoard()
+{
+    // Print the first element (on the top-left corner)
+    printf("\n| |");
+
+    // Print the first row , i.e. "| |0|1|2|3|4|5|6|7|8|9|"
+    for(int boardFirstRow = 0; boardFirstRow <= 9; boardFirstRow++)
+    {
+        printf("%d|", boardFirstRow);
+    }
+
+    // print for each row and each element appended, i.e. "|0 to 9| | | | | | | | | | |"
+    for(int boardHeightIndex = 0; boardHeightIndex <= (BOARD_HEIGHT - 1); boardHeightIndex++)
+    {
+        printf("\n|%d|", boardHeightIndex);
+        for(int boardWidthIndex = 0; boardWidthIndex <= (BOARD_WIDTH - 1); boardWidthIndex++)
+        {
+            printf("%s|", EMPTY_OUTPUT);
+        }
+    }
 }

@@ -13,6 +13,7 @@ typedef enum boolean
     TRUE
 } Boolean;
 
+
 #define NEW_LINE_SPACE 1
 #define NULL_SPACE 1
 
@@ -29,5 +30,15 @@ typedef enum boolean
  * function when this has happened.
  **/
 void readRestOfLine();
+
+/**
+ * The function to get user input string
+ */
+Boolean getUserInputString(char* inputResult, int32_t expectedLength);
+
+/**
+ * The function to get user input char
+ */
+char getUserInputChar();
 
 #endif

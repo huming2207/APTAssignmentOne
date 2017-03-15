@@ -90,4 +90,10 @@ PlayerMove movePlayerForward(Cell board[BOARD_HEIGHT][BOARD_WIDTH],
  */
 void displayBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player);
 
+
+/**
+ *  Display an empty board before the game starts, i.e. before the "load" command is set
+ */
+void displayEmptyBoard();
+
 #endif
