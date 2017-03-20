@@ -11,21 +11,43 @@ void readRestOfLine()
     clearerr(stdin);
 }
 
+/**
+ *
+ * Now this method contains some code from course sample docs.
+ * My original ones always have stall issues.
+ *
+ */
 Boolean getUserInputString(char* inputResult, int32_t expectedLength)
 {
-    /**
-     * If the string length is longer than expected, it must be something wrong.
-     * Clear it up and return a FALSE.
-     * */
-    if((int32_t)strlen(inputResult) > expectedLength)
+    return FALSE;
+}
+
+
+/**
+ *  Get a single char input from user
+ *
+ */
+char getUserInputChar(Boolean ignoreNewline)
+{
+    char input[3];
+    fgets(input, 2, stdin);
+
+    /* Ignoring new line inspection or not... */
+    if(ignoreNewline != FALSE)
     {
-        readRestOfLine();
-        return FALSE;
+        if(input[0] == '\n' || input[0] == '\r')
+        {
+            printf("\n\nInvalid input.\n\n");
+            return '\0';
+        }
+        else
+        {
+            readRestOfLine();
+            return input[0];
+        }
     }
     else
     {
-        // Include the "\n" and "\0"
-        fgets(inputResult, expectedLength + 2, stdin);
-        return TRUE;
+        return input[0];
     }
 }

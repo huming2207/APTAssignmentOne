@@ -19,7 +19,7 @@ void showStudentInformation()
 
 void mainMenu()
 {
-    char input = 0;
+    char input;
     printf("Welcome to Car Board\n"
            "--------------------\n"
            "1. Play Game\n"
@@ -31,7 +31,14 @@ void mainMenu()
      * So I used char instead of other type to handle that.
      */
     printf("Please enter your choice: ");
-    fgets(&input, 2, stdin);
+
+    input = getUserInputChar(TRUE);
+
+    /* When input returns "\0", then it must be something wrong. Do the whole method again. */
+    if(input == '\0')
+    {
+        mainMenu();
+    }
 
     switch(input)
     {
@@ -63,12 +70,10 @@ void mainMenu()
             break;
         }
     }
-
 }
 
 void helpMessageBeforeGame()
 {
-    char input = 0;
     printf("\n"
            "You can use the following commands to play the game:\n"
            "load <g>\n"
@@ -82,10 +87,7 @@ void helpMessageBeforeGame()
            "turn_right (or r)\n"
            "quit\n"
            "\n"
-           "Press enter to continue...");
-
-    readRestOfLine();
-    fgets(&input, 2, stdin);
+           "Press enter to continue...   ");
 
     /**
      * As it required in the message of sample carboard binary provided on the blackboard, only **press enter** is expected.
@@ -93,13 +95,14 @@ void helpMessageBeforeGame()
      * That's probably a bug? (or...just became a feature lol?!)
      * Anyway, here I have limited the input to enter key ONLY.
      * */
-    if(input == '\n' || input == '\r')
+    if(getUserInputChar(FALSE) == '\n')
     {
         displayEmptyBoard();
     }
     else
     {
         printf("\n\nInvalid input.\n\n");
+        readRestOfLine();
         helpMessageBeforeGame();
     }
 

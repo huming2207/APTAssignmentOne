@@ -39,6 +39,6 @@ Boolean getUserInputString(char* inputResult, int32_t expectedLength);
 /**
  * The function to get user input char
  */
-char getUserInputChar();
+char getUserInputChar(Boolean ignoreNewline);
 
 #endif
