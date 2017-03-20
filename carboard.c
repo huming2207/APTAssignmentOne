@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "carboard.h"
-#include "helpers.h"
 
 
 int main()
@@ -20,16 +19,19 @@ void showStudentInformation()
 
 void mainMenu()
 {
+    char input = 0;
     printf("Welcome to Car Board\n"
            "--------------------\n"
            "1. Play Game\n"
            "2. Show student information\n"
            "3. Quit\n\n");
 
-    // As the requirement said, we need to handle any other unexpected input (except numeric stuff).
-    // So I used char instead of other type to handle that.
+    /**
+     * As the requirement said, we need to handle any other unexpected input (except numeric stuff).
+     * So I used char instead of other type to handle that.
+     */
     printf("Please enter your choice: ");
-    char input = (char)fgetc(stdin);
+    fgets(&input, 2, stdin);
 
     switch(input)
     {
@@ -40,7 +42,7 @@ void mainMenu()
             break;
         }
 
-        // Char "1" in ASCII is 49
+        // Char "2" in ASCII is 50
         case 50:
         {
             showStudentInformation();
@@ -48,6 +50,7 @@ void mainMenu()
             break;
         }
 
+        // Char "3" in ASCII is 51
         case 51:
         {
             break;
@@ -55,7 +58,7 @@ void mainMenu()
 
         default:
         {
-            printf("Invalid input.\n\n");
+            printf("\n\nInvalid input.\n\n");
             mainMenu();
             break;
         }
@@ -65,6 +68,7 @@ void mainMenu()
 
 void helpMessageBeforeGame()
 {
+    char input = 0;
     printf("\n"
            "You can use the following commands to play the game:\n"
            "load <g>\n"
@@ -80,14 +84,24 @@ void helpMessageBeforeGame()
            "\n"
            "Press enter to continue...");
 
-    int input = fgetc(stdin);
+    readRestOfLine();
+    fgets(&input, 2, stdin);
 
-    if(input != 0)
+    /**
+     * As it required in the message of sample carboard binary provided on the blackboard, only **press enter** is expected.
+     * But if you press other keys in the carboard binary, it will also jump into the next step.
+     * That's probably a bug? (or...just became a feature lol?!)
+     * Anyway, here I have limited the input to enter key ONLY.
+     * */
+    if(input == '\n' || input == '\r')
     {
         displayEmptyBoard();
     }
-
-
+    else
+    {
+        printf("\n\nInvalid input.\n\n");
+        helpMessageBeforeGame();
+    }
 
 }
 

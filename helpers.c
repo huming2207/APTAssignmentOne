@@ -13,8 +13,10 @@ void readRestOfLine()
 
 Boolean getUserInputString(char* inputResult, int32_t expectedLength)
 {
-    // If the string length is longer than expected, it must be something wrong.
-    // Clear it up and return a FALSE.
+    /**
+     * If the string length is longer than expected, it must be something wrong.
+     * Clear it up and return a FALSE.
+     * */
     if((int32_t)strlen(inputResult) > expectedLength)
     {
         readRestOfLine();
@@ -22,7 +24,8 @@ Boolean getUserInputString(char* inputResult, int32_t expectedLength)
     }
     else
     {
+        // Include the "\n" and "\0"
         fgets(inputResult, expectedLength + 2, stdin);
         return TRUE;
     }
-};
+}
