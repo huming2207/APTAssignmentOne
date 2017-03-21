@@ -20,22 +20,7 @@
 #define DIRECTION_SOUTH "south"
 #define DIRECTION_WEST "west"
 
-typedef enum commandInfo
-{
-    LOAD = 0,
-    INIT = 1,
-    FORWARD = 2,
-    TURN_LEFT = 3,
-    TURN_RIGHT = 4,
-    QUIT = -1
-} CommandInfo;
 
-typedef struct inputInfo
-{
-    Direction direction;
-    CommandInfo commandInfo;
-    Position position;
-} InputInfo;
 
 
 

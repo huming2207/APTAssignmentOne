@@ -15,6 +15,8 @@ helpers.h
 /Users/Jackson/Projects/APTAssignment/helpers.h
 player.h
 /Users/Jackson/Projects/APTAssignment/player.h
+carboard.h
+/Users/Jackson/Projects/APTAssignment/carboard.h
 
 /Users/Jackson/Projects/APTAssignment/carboard.c
 stdio.h

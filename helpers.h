@@ -7,6 +7,7 @@
 #include <assert.h>
 #include <ctype.h>
 
+
 typedef enum boolean
 {
     FALSE = 0,
@@ -40,5 +41,7 @@ Boolean getUserInputString(char* inputResult, int32_t expectedLength);
  * The function to get user input char
  */
 char getUserInputChar(Boolean ignoreNewline);
+
+
 
 #endif

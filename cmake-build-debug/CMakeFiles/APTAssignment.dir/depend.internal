@@ -4,6 +4,8 @@
 CMakeFiles/APTAssignment.dir/board.c.o
  /Users/Jackson/Projects/APTAssignment/board.c
  /Users/Jackson/Projects/APTAssignment/board.h
+ /Users/Jackson/Projects/APTAssignment/carboard.h
+ /Users/Jackson/Projects/APTAssignment/game.h
  /Users/Jackson/Projects/APTAssignment/helpers.h
  /Users/Jackson/Projects/APTAssignment/player.h
 CMakeFiles/APTAssignment.dir/carboard.c.o
@@ -15,6 +17,7 @@ CMakeFiles/APTAssignment.dir/carboard.c.o
  /Users/Jackson/Projects/APTAssignment/player.h
 CMakeFiles/APTAssignment.dir/game.c.o
  /Users/Jackson/Projects/APTAssignment/board.h
+ /Users/Jackson/Projects/APTAssignment/carboard.h
  /Users/Jackson/Projects/APTAssignment/game.c
  /Users/Jackson/Projects/APTAssignment/game.h
  /Users/Jackson/Projects/APTAssignment/helpers.h

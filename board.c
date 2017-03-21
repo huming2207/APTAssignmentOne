@@ -46,16 +46,74 @@ Cell BOARD_EMPTY[BOARD_HEIGHT][BOARD_WIDTH] =
 
 void initialiseBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH])
 {
+    InputInfo inputInfo;
     displayBoard(board, NULL);
     printf("\n\nAt this stage of the program, only two commands are acceptable:\n"
                    "load <g>\n"
                    "quit\n\n");
+
+    /* Set stage to Stage #2 */
+    inputInfo = parseUserMenuInput(2);
+
+    if(inputInfo.commandInfo == CMD_ERROR)
+    {
+        printf("\n\nInvalid input\n\n");
+        initialiseBoard(board);
+    }
+
+    switch(inputInfo.commandInfo)
+    {
+        case CMD_LOAD:
+        {
+            switch(inputInfo.boardToLoad)
+            {
+                case 1: loadBoard(NULL, BOARD_1); break;
+                case 2: loadBoard(NULL, BOARD_2); break;
+                default: break; /* That's impossible, as it was blocked when parsing user input */
+            }
+        }
+
+        case CMD_QUIT: mainMenu(); break;
+
+        default: break;
+    }
+
 }
 
-void loadBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH],
-               Cell boardToLoad[BOARD_HEIGHT][BOARD_WIDTH])
+void loadBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Cell boardToLoad[BOARD_HEIGHT][BOARD_WIDTH])
 {
-    /* TODO */
+    InputInfo inputInfo;
+    displayBoard(boardToLoad, NULL);
+    printf("\n\nAt this stage of the program, only three commands are acceptable:\n"
+                   "load <g>\n"
+                   "init <x>,<y>,<direction>\n"
+                   "quit\n\n");
+
+    /* Set stage to Stage #3 */
+    inputInfo = parseUserMenuInput(3);
+
+    if(inputInfo.commandInfo == CMD_ERROR)
+    {
+        printf("\n\nInvalid input\n\n");
+        loadBoard(board, boardToLoad);
+    }
+
+    switch(inputInfo.commandInfo)
+    {
+        case CMD_LOAD:
+        {
+            switch(inputInfo.boardToLoad)
+            {
+
+            }
+
+        }
+
+        case CMD_QUIT: mainMenu(); break;
+        default: break;
+    }
+
+
 }
 
 Boolean placePlayer(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Position position)
@@ -116,27 +174,69 @@ void displayBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player)
     }
 }
 
-void displayEmptyBoard()
-{
-    int boardHeightIndex, boardFirstRow, boardWidthIndex;
-    /* Print the first element (on the top-left corner) */
-    printf("\n| |");
 
-    /* Print the first row , i.e. "| |0|1|2|3|4|5|6|7|8|9|" */
-    for(boardFirstRow = 0; boardFirstRow <= 9; boardFirstRow++)
+InputInfo parseUserMenuInput(int stage)
+{
+    InputInfo inputInfo;
+    char input[17];
+    char* splittedInput;
+
+    /* Get user input */
+    getUserInputString(input, 15);
+
+    /* User input must be longer than 4, otherwise it's invalid. */
+    if((int)strlen(input) < 4)
     {
-        printf("%d|", boardFirstRow);
+        printf("\n\nInvalid input.\n\n");
+        loadBoard(BOARD_EMPTY, NULL);
     }
 
-    /* print for each row and each element appended, i.e. "|0 to 9| | | | | | | | | | |" */
-    for(boardHeightIndex = 0; boardHeightIndex <= (BOARD_HEIGHT - 1); boardHeightIndex++)
+    /* Do a string split, get the first string */
+    splittedInput = strtok(input, " ");
+
+    /* Do the first judgement to see if it's "load" or "quit" */
+    if(strcmp(&splittedInput[0], "load") == 0)
     {
-        printf("\n|%d|", boardHeightIndex);
-        for(boardWidthIndex = 0; boardWidthIndex <= (BOARD_WIDTH - 1); boardWidthIndex++)
+        /* Wait and have a look at the next char, should be 1 or 2, after processing, jump out from the while loop */
+        while (splittedInput != NULL)
         {
-            printf("%s|", EMPTY_OUTPUT);
+            splittedInput = strtok (NULL, " ");
+            if(strcmp(&splittedInput[0], "1") == 0)
+            {
+                splittedInput = NULL;
+                inputInfo.commandInfo = CMD_LOAD;
+                inputInfo.boardToLoad = 1;
+                return inputInfo;
+            }
+            else if(strcmp(&splittedInput[0], "2") == 0)
+            {
+                splittedInput = NULL;
+                inputInfo.commandInfo = CMD_LOAD;
+                inputInfo.boardToLoad = 2;
+                return inputInfo;
+            }
+            else
+            {
+                splittedInput = NULL;
+                inputInfo.commandInfo = CMD_ERROR;
+                return inputInfo;
+            }
         }
     }
-
-
+    else if(strcmp(&splittedInput[0], "quit") == 0)
+    {
+        printf("\n");
+        inputInfo.commandInfo = CMD_QUIT;
+        return inputInfo;
+    }
+    else if(strcmp(&splittedInput[0], "init") == 0 && stage == 3)
+    {
+        inputInfo.commandInfo = CMD_INIT;
+        return inputInfo;
+    }
+    else
+    {
+        inputInfo.commandInfo = CMD_ERROR;
+        return inputInfo;
+    }
 }

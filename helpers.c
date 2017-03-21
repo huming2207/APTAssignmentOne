@@ -20,7 +20,8 @@ void readRestOfLine()
  */
 Boolean getUserInputString(char* inputResult, int32_t expectedLength)
 {
-    char input[expectedLength + 2];
+    /* According to clang compiler, variable length arrays are a C99 feature. So I use a fixed one here */
+    char input[50];
     Boolean finished;
     finished = FALSE;
 
@@ -77,3 +78,5 @@ char getUserInputChar(Boolean ignoreNewline)
         return input[0];
     }
 }
+
+

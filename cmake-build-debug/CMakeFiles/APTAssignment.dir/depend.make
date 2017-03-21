@@ -3,6 +3,8 @@
 
 CMakeFiles/APTAssignment.dir/board.c.o: ../board.c
 CMakeFiles/APTAssignment.dir/board.c.o: ../board.h
+CMakeFiles/APTAssignment.dir/board.c.o: ../carboard.h
+CMakeFiles/APTAssignment.dir/board.c.o: ../game.h
 CMakeFiles/APTAssignment.dir/board.c.o: ../helpers.h
 CMakeFiles/APTAssignment.dir/board.c.o: ../player.h
 
@@ -14,6 +16,7 @@ CMakeFiles/APTAssignment.dir/carboard.c.o: ../helpers.h
 CMakeFiles/APTAssignment.dir/carboard.c.o: ../player.h
 
 CMakeFiles/APTAssignment.dir/game.c.o: ../board.h
+CMakeFiles/APTAssignment.dir/game.c.o: ../carboard.h
 CMakeFiles/APTAssignment.dir/game.c.o: ../game.c
 CMakeFiles/APTAssignment.dir/game.c.o: ../game.h
 CMakeFiles/APTAssignment.dir/game.c.o: ../helpers.h

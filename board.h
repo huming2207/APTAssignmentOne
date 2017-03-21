@@ -3,6 +3,7 @@
 
 #include "helpers.h"
 #include "player.h"
+#include "carboard.h"
 
 #define BOARD_WIDTH 10
 #define BOARD_HEIGHT 10
@@ -28,7 +29,23 @@ typedef enum playerMove
     OUTSIDE_BOUNDS
 } PlayerMove;
 
+typedef enum commandInfo
+{
+    CMD_ERROR = -1,
+    CMD_LOAD = 0,
+    CMD_INIT = 1,
+    CMD_FORWARD = 2,
+    CMD_TURN_LEFT = 3,
+    CMD_TURN_RIGHT = 4,
+    CMD_QUIT = 5
+} CommandInfo;
 
+typedef struct inputInfo
+{
+    CommandInfo commandInfo;
+    Position position;
+    int boardToLoad;
+} InputInfo;
 
 /**
  * Initialise the board - set all the cells in the board to EMPTY.
@@ -93,10 +110,9 @@ PlayerMove movePlayerForward(Cell board[BOARD_HEIGHT][BOARD_WIDTH],
  */
 void displayBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player);
 
-
 /**
- *  Display an empty board before the game starts, i.e. before the "load" command is set
+ * Get user menu input
  */
-void displayEmptyBoard();
+InputInfo parseUserMenuInput(int stage);
 
 #endif

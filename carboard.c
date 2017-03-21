@@ -42,14 +42,14 @@ void mainMenu()
 
     switch(input)
     {
-        // Char "1" in ASCII is 49
+        /* Char "1" in ASCII is 49 */
         case 49:
         {
             helpMessageBeforeGame();
             break;
         }
 
-        // Char "2" in ASCII is 50
+        /* Char "2" in ASCII is 50 */
         case 50:
         {
             showStudentInformation();
@@ -57,7 +57,7 @@ void mainMenu()
             break;
         }
 
-        // Char "3" in ASCII is 51
+        /* Char "3" in ASCII is 51 */
         case 51:
         {
             break;
@@ -72,29 +72,29 @@ void mainMenu()
     }
 }
 
-void helpMessageBeforeGame()
-{
-    printf("\n"
-           "You can use the following commands to play the game:\n"
-           "load <g>\n"
-           "   g: number of the game board to load\n"
-           "init <x>,<y>,<direction>\n"
-           "   x: horizontal position of the car on the board (between 0 & 9)\n"
-           "   y: vertical position of the car on the board (between 0 & 9)\n"
-           "   direction: direction of the car's movement (north, east, south, west)\n"
-           "forward (or f)\n"
-           "turn_left (or l)\n"
-           "turn_right (or r)\n"
-           "quit\n"
-           "\n"
-           "Press enter to continue...   ");
+    void helpMessageBeforeGame()
+    {
+        printf("\n"
+               "You can use the following commands to play the game:\n"
+               "load <g>\n"
+               "   g: number of the game board to load\n"
+               "init <x>,<y>,<direction>\n"
+               "   x: horizontal position of the car on the board (between 0 & 9)\n"
+               "   y: vertical position of the car on the board (between 0 & 9)\n"
+               "   direction: direction of the car's movement (north, east, south, west)\n"
+               "forward (or f)\n"
+               "turn_left (or l)\n"
+               "turn_right (or r)\n"
+               "quit\n"
+               "\n"
+               "Press enter to continue...   ");
 
-    /**
-     * As it required in the message of sample carboard binary provided on the blackboard, only **press enter** is expected.
-     * But if you press other keys in the carboard binary, it will also jump into the next step.
-     * That's probably a bug? (or...just became a feature lol?!)
-     * Anyway, here I have limited the input to enter key ONLY.
-     * */
+        /**
+         * As it required in the message of sample carboard binary provided on the blackboard, only **press enter** is expected.
+         * But if you press other keys in the carboard binary, it will also jump into the next step.
+         * That's probably a bug? (or...just became a feature lol?!)
+         * Anyway, here I have limited the input to enter key ONLY.
+         * */
     if(getUserInputChar(FALSE) == '\n')
     {
         playGame();
