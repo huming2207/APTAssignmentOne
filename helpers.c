@@ -13,13 +13,39 @@ void readRestOfLine()
 
 /**
  *
- * Now this method contains some code from course sample docs.
- * My original ones always have stall issues.
+ * Now this method contains some code from course sample docs (getString-basic.c).
+ * My original ones always have some stall issues, so use this one instead.
+ * I changed some parts of it to make it more robust and satisfy my needs.
  *
  */
 Boolean getUserInputString(char* inputResult, int32_t expectedLength)
 {
-    return FALSE;
+    char input[expectedLength + 2];
+    Boolean finished;
+    finished = FALSE;
+
+    while(finished == FALSE)
+    {
+        /* Report FALSE if the string is too long */
+        if((expectedLength + 2) <= 50)
+        {
+            fgets(input, expectedLength + 2, stdin);
+        }
+        else
+        {
+            return FALSE;
+        }
+
+        /* Force append \0 to end this string */
+        input[strlen(input) - 1] = '\0';
+
+        /* Copy the string to the result pointer */
+        strcpy(inputResult, input);
+
+        finished = TRUE;
+    }
+
+    return TRUE;
 }
 
 

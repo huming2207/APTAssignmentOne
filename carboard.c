@@ -97,7 +97,7 @@ void helpMessageBeforeGame()
      * */
     if(getUserInputChar(FALSE) == '\n')
     {
-        displayEmptyBoard();
+        playGame();
     }
     else
     {

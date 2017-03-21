@@ -20,6 +20,25 @@
 #define DIRECTION_SOUTH "south"
 #define DIRECTION_WEST "west"
 
+typedef enum commandInfo
+{
+    LOAD = 0,
+    INIT = 1,
+    FORWARD = 2,
+    TURN_LEFT = 3,
+    TURN_RIGHT = 4,
+    QUIT = -1
+} CommandInfo;
+
+typedef struct inputInfo
+{
+    Direction direction;
+    CommandInfo commandInfo;
+    Position position;
+} InputInfo;
+
+
+
 /**
  * Main menu option 1 - play the game as per the specification.
  *
@@ -33,5 +52,11 @@
  * Note that if you don't break this function up it could become pretty big...
  */
 void playGame();
+
+/**
+ * Hold and wait user input, then parse into specified data type
+ *
+ */
+void holdAndWaitInput();
 
 #endif

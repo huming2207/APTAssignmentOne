@@ -19,6 +19,7 @@ typedef enum cell
 
 Cell BOARD_1[BOARD_HEIGHT][BOARD_WIDTH];
 Cell BOARD_2[BOARD_HEIGHT][BOARD_WIDTH];
+Cell BOARD_EMPTY[BOARD_HEIGHT][BOARD_WIDTH];
 
 typedef enum playerMove
 {
@@ -26,6 +27,8 @@ typedef enum playerMove
     CELL_BLOCKED,
     OUTSIDE_BOUNDS
 } PlayerMove;
+
+
 
 /**
  * Initialise the board - set all the cells in the board to EMPTY.
