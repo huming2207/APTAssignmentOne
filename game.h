@@ -38,10 +38,6 @@
  */
 void playGame();
 
-/**
- * Hold and wait user input, then parse into specified data type
- *
- */
-void holdAndWaitInput();
+
 
 #endif

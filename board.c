@@ -76,11 +76,8 @@ void initialiseBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH])
         }
 
         case CMD_QUIT: mainMenu(); break;
-
         default: break;
     }
-
-
 
 }
 
@@ -109,11 +106,16 @@ void loadBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Cell boardToLoad[BOARD_HEI
         {
             switch(inputInfo.boardToLoad)
             {
-
+                case 1: loadBoard(NULL, BOARD_1); break;
+                case 2: loadBoard(NULL, BOARD_2); break;
+                default: break; /* That's impossible, as it was blocked when parsing user input */
             }
 
         }
-
+        case CMD_INIT:
+        {
+            startGame(boardToLoad, inputInfo);
+        }
         case CMD_QUIT: mainMenu(); break;
         default: break;
     }
@@ -123,15 +125,31 @@ void loadBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Cell boardToLoad[BOARD_HEI
 
 Boolean placePlayer(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Position position)
 {
-    /* TODO */
-    return FALSE;
+    if(board[position.y][position.x] != BLOCKED)
+    {
+        board[position.y][position.x] = PLAYER;
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
 }
 
-PlayerMove movePlayerForward(Cell board[BOARD_HEIGHT][BOARD_WIDTH],
-                             Player * player)
+PlayerMove movePlayerForward(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player)
 {
-    /* TODO */
-    return PLAYER_MOVED;
+    if(player->position.x > BOARD_HEIGHT || player->position.y > BOARD_WIDTH)
+    {
+        return OUTSIDE_BOUNDS;
+    }
+    else if(placePlayer(board, player->position))
+    {
+        return PLAYER_MOVED;
+    }
+    else
+    {
+        return CELL_BLOCKED;
+    }
 }
 
 void displayBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player)
@@ -179,6 +197,123 @@ void displayBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player)
     }
 }
 
+void startGame(Cell board[BOARD_HEIGHT][BOARD_WIDTH], InputInfo inputInfo)
+{
+    Player player;
+
+    player = playerInit(inputInfo);
+    if(placePlayer(board, player.position) == TRUE)
+    {
+        displayBoard(board, &player);
+    }
+    else
+    {
+        printf("\n\nInvalid input\n\n");
+        loadBoard(NULL, board);
+        return;
+    }
+}
+
+Player playerInit(InputInfo inputInfo)
+{
+    Player player;
+    int strSourceIndex;
+    int strDestIndex;
+    char directionString[6];
+    player.position = inputInfo.position;
+
+    for(strSourceIndex = 4; strSourceIndex <= 9; strSourceIndex++)
+    {
+        strDestIndex = strSourceIndex - 4;
+        directionString[strDestIndex] = inputInfo.initInput[strSourceIndex];
+    }
+
+    if(strcmp(directionString, "east") == 0)
+    {
+        player.direction = EAST;
+    }
+    else if(strcmp(directionString, "south") == 0)
+    {
+        player.direction = SOUTH;
+    }
+    else if(strcmp(directionString, "west") == 0)
+    {
+        player.direction = WEST;
+    }
+    else if(strcmp(directionString, "north") == 0)
+    {
+        player.direction = NORTH;
+    }
+
+    return player;
+
+}
+
+InputInfo parseLoadCommand(char* splittedInput)
+{
+    InputInfo inputInfo;
+
+    /* Wait and have a look at the next char, should be 1 or 2, after processing, jump out from the while loop */
+    while (splittedInput != NULL)
+    {
+        splittedInput = strtok (NULL, " ");
+        if(strcmp(&splittedInput[0], "1") == 0)
+        {
+            splittedInput = NULL;
+            inputInfo.commandInfo = CMD_LOAD;
+            inputInfo.boardToLoad = 1;
+            return inputInfo;
+        }
+        else if(strcmp(&splittedInput[0], "2") == 0)
+        {
+            splittedInput = NULL;
+            inputInfo.commandInfo = CMD_LOAD;
+            inputInfo.boardToLoad = 2;
+            return inputInfo;
+        }
+        else
+        {
+            splittedInput = NULL;
+            inputInfo.commandInfo = CMD_ERROR;
+            printf("\n\nInvalid input\n\n");
+            return inputInfo;
+        }
+    }
+}
+
+InputInfo parseInitCommand(char* splittedInput)
+{
+    InputInfo inputInfo;
+    char initString[15];
+
+    while (splittedInput != NULL)
+    {
+        splittedInput = strtok (NULL, " ");
+        strcpy(initString, &splittedInput[0]);
+
+        if(initString[1] == ',' || initString[3] == ',')
+        {
+            splittedInput = NULL;
+            inputInfo.commandInfo = CMD_INIT;
+            inputInfo.position.x = initString[0] - '0'; /* minus '0' to get the real digit (based on ASCII, '0' is 48)*/
+            inputInfo.position.y = initString[2] - '0'; /* minus '0' to get the real digit (based on ASCII, '0' is 48)*/
+            strcpy(inputInfo.initInput, initString);
+            return inputInfo;
+        }
+        else
+        {
+            splittedInput = NULL;
+            inputInfo.commandInfo = CMD_ERROR;
+            printf("\n\nInvalid input\n\n");
+            return inputInfo;
+        }
+    }
+
+    inputInfo.commandInfo = CMD_ERROR;
+    printf("\n\nInvalid input\n\n");
+    return inputInfo;
+}
+
 
 InputInfo parseUserMenuInput(int stage)
 {
@@ -189,8 +324,8 @@ InputInfo parseUserMenuInput(int stage)
     /* Get user input */
     getUserInputString(input, 15);
 
-    /* User input must be longer than 4, otherwise it's invalid. */
-    if((int)strlen(input) < 4)
+    /* User input must be longer than 1, otherwise it's invalid. */
+    if((int)strlen(input) < 1)
     {
         inputInfo.commandInfo = CMD_ERROR;
         printf("\n\nInvalid input\n\n");
@@ -203,32 +338,7 @@ InputInfo parseUserMenuInput(int stage)
     /* Do the first judgement to see if it's "load" or "quit" */
     if(strcmp(&splittedInput[0], "load") == 0)
     {
-        /* Wait and have a look at the next char, should be 1 or 2, after processing, jump out from the while loop */
-        while (splittedInput != NULL)
-        {
-            splittedInput = strtok (NULL, " ");
-            if(strcmp(&splittedInput[0], "1") == 0)
-            {
-                splittedInput = NULL;
-                inputInfo.commandInfo = CMD_LOAD;
-                inputInfo.boardToLoad = 1;
-                return inputInfo;
-            }
-            else if(strcmp(&splittedInput[0], "2") == 0)
-            {
-                splittedInput = NULL;
-                inputInfo.commandInfo = CMD_LOAD;
-                inputInfo.boardToLoad = 2;
-                return inputInfo;
-            }
-            else
-            {
-                splittedInput = NULL;
-                inputInfo.commandInfo = CMD_ERROR;
-                printf("\n\nInvalid input\n\n");
-                return inputInfo;
-            }
-        }
+        return parseLoadCommand(splittedInput);
     }
     else if(strcmp(&splittedInput[0], "quit") == 0)
     {
@@ -238,8 +348,7 @@ InputInfo parseUserMenuInput(int stage)
     }
     else if(strcmp(&splittedInput[0], "init") == 0 && stage == 3)
     {
-        inputInfo.commandInfo = CMD_INIT;
-        return inputInfo;
+        return parseInitCommand(splittedInput);
     }
     else
     {

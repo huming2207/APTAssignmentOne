@@ -45,6 +45,7 @@ typedef struct inputInfo
     CommandInfo commandInfo;
     Position position;
     int boardToLoad;
+    char initInput[15];
 } InputInfo;
 
 /**
@@ -117,8 +118,22 @@ void displayBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player);
 InputInfo parseUserMenuInput(int stage);
 
 /**
- * Handle user input error, run the function again and ask the user to re-enter the correct value
+ * Parse user input for "init" section
+ *
  */
+InputInfo parseInitCommand(char* splittedInput);
+
+/**
+ * Parse user input for "load" section
+ */
+InputInfo parseLoadCommand(char* splittedInput);
+
+/**
+ * Initialize a player from an "InputInfo"
+ */
+Player playerInit(InputInfo inputInfo);
+
+void startGame(Cell board[BOARD_HEIGHT][BOARD_WIDTH], InputInfo inputInfo);
 
 
 #endif
