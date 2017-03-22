@@ -48,6 +48,7 @@ void initialiseBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH])
 {
     InputInfo inputInfo;
     displayBoard(board, NULL);
+
     printf("\n\nAt this stage of the program, only two commands are acceptable:\n"
                    "load <g>\n"
                    "quit\n\n");
@@ -55,6 +56,7 @@ void initialiseBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH])
     /* Set stage to Stage #2 */
     inputInfo = parseUserMenuInput(2);
 
+    /* If input returns an error, try again. */
     if(inputInfo.commandInfo == CMD_ERROR)
     {
         printf("\n\nInvalid input\n\n");
@@ -78,6 +80,8 @@ void initialiseBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH])
         default: break;
     }
 
+
+
 }
 
 void loadBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Cell boardToLoad[BOARD_HEIGHT][BOARD_WIDTH])
@@ -96,6 +100,7 @@ void loadBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Cell boardToLoad[BOARD_HEI
     {
         printf("\n\nInvalid input\n\n");
         loadBoard(board, boardToLoad);
+        return;
     }
 
     switch(inputInfo.commandInfo)
@@ -113,7 +118,7 @@ void loadBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Cell boardToLoad[BOARD_HEI
         default: break;
     }
 
-
+    return;
 }
 
 Boolean placePlayer(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Position position)
@@ -187,8 +192,9 @@ InputInfo parseUserMenuInput(int stage)
     /* User input must be longer than 4, otherwise it's invalid. */
     if((int)strlen(input) < 4)
     {
-        printf("\n\nInvalid input.\n\n");
-        loadBoard(BOARD_EMPTY, NULL);
+        inputInfo.commandInfo = CMD_ERROR;
+        printf("\n\nInvalid input\n\n");
+        return inputInfo;
     }
 
     /* Do a string split, get the first string */
@@ -219,6 +225,7 @@ InputInfo parseUserMenuInput(int stage)
             {
                 splittedInput = NULL;
                 inputInfo.commandInfo = CMD_ERROR;
+                printf("\n\nInvalid input\n\n");
                 return inputInfo;
             }
         }
@@ -237,6 +244,9 @@ InputInfo parseUserMenuInput(int stage)
     else
     {
         inputInfo.commandInfo = CMD_ERROR;
+        printf("\n\nInvalid input\n\n");
         return inputInfo;
     }
 }
+
+

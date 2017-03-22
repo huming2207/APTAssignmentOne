@@ -112,7 +112,13 @@ void displayBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player);
 
 /**
  * Get user menu input
+ * then return a input information for further processing
  */
 InputInfo parseUserMenuInput(int stage);
+
+/**
+ * Handle user input error, run the function again and ask the user to re-enter the correct value
+ */
+
 
 #endif
