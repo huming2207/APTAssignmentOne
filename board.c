@@ -110,7 +110,7 @@ void loadBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Cell boardToLoad[BOARD_HEI
                 case 2: loadBoard(NULL, BOARD_2); break;
                 default: break; /* That's impossible, as it was blocked when parsing user input */
             }
-
+            break;
         }
         case CMD_INIT:
         {
@@ -125,8 +125,22 @@ void loadBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Cell boardToLoad[BOARD_HEI
 
 Boolean placePlayer(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Position position)
 {
-    if(board[position.y][position.x] != BLOCKED)
+    int heightIndex, widthIndex;
+
+    if(board[position.y][position.x] != BLOCKED && position.x < BOARD_WIDTH && position.y < BOARD_HEIGHT)
     {
+        /* Remove all players before assign the player position */
+        for(heightIndex = 0; heightIndex < BOARD_HEIGHT; heightIndex++)
+        {
+            for(widthIndex = 0; widthIndex < BOARD_WIDTH; widthIndex++)
+            {
+                if(board[heightIndex][widthIndex] == PLAYER)
+                {
+                    board[heightIndex][widthIndex] = EMPTY;
+                }
+            }
+        }
+
         board[position.y][position.x] = PLAYER;
         return TRUE;
     }
@@ -136,19 +150,27 @@ Boolean placePlayer(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Position position)
     }
 }
 
+void removePlayer(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Position position)
+{
+    board[position.y][position.x] = EMPTY;
+}
+
 PlayerMove movePlayerForward(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player)
 {
+    Position position;
+    position = getNextForwardPosition(player);
+
     if(player->position.x > BOARD_HEIGHT || player->position.y > BOARD_WIDTH)
     {
         return OUTSIDE_BOUNDS;
     }
-    else if(placePlayer(board, player->position))
+    else if(board[position.y][position.x] != EMPTY)
     {
-        return PLAYER_MOVED;
+        return CELL_BLOCKED;
     }
     else
     {
-        return CELL_BLOCKED;
+        return PLAYER_MOVED;
     }
 }
 
@@ -181,13 +203,16 @@ void displayBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player)
                 case BLOCKED: printf("%s|", BLOCKED_OUTPUT); break;
                 case PLAYER:
                 {
-                    /* print player by pre-defined direction */
-                    switch(player->direction)
+                    if(player != NULL)
                     {
-                        case EAST: printf("%s|", DIRECTION_ARROW_OUTPUT_EAST); break;
-                        case SOUTH: printf("%s|", DIRECTION_ARROW_OUTPUT_SOUTH); break;
-                        case WEST: printf("%s|", DIRECTION_ARROW_OUTPUT_WEST); break;
-                        case NORTH: printf("%s|", DIRECTION_ARROW_OUTPUT_NORTH); break;
+                        /* print player by pre-defined direction */
+                        switch(player->direction)
+                        {
+                            case EAST: printf("%s|", DIRECTION_ARROW_OUTPUT_EAST); break;
+                            case SOUTH: printf("%s|", DIRECTION_ARROW_OUTPUT_SOUTH); break;
+                            case WEST: printf("%s|", DIRECTION_ARROW_OUTPUT_WEST); break;
+                            case NORTH: printf("%s|", DIRECTION_ARROW_OUTPUT_NORTH); break;
+                        }
                     }
                     break;
                 }
@@ -204,7 +229,7 @@ void startGame(Cell board[BOARD_HEIGHT][BOARD_WIDTH], InputInfo inputInfo)
     player = playerInit(inputInfo, board);
     if(placePlayer(board, player.position) == TRUE)
     {
-        displayBoard(board, &player);
+        gameHandler(board, &player);
     }
     else
     {
@@ -213,6 +238,69 @@ void startGame(Cell board[BOARD_HEIGHT][BOARD_WIDTH], InputInfo inputInfo)
         return;
     }
 }
+
+void gameHandler(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player* player)
+{
+    InputInfo inputInfo;
+    Position nextPosition;
+    PlayerMove nextPlayerMove;
+
+    displayBoard(board, player);
+    printf("\n\nAt this stage of the program, only four commands are acceptable:\n"
+                   "forward (or f)\n"
+                   "turn_left (or l)\n"
+                   "turn_right (or r)\n"
+                   "quit\n\n");
+
+    inputInfo = parseUserMenuInput(4);
+
+    switch(inputInfo.commandInfo)
+    {
+        case CMD_TURN_RIGHT:
+        {
+            turnDirection(player, TURN_RIGHT);
+            gameHandler(board, player);
+            break;
+        }
+        case CMD_TURN_LEFT:
+        {
+            turnDirection(player, TURN_LEFT);
+            gameHandler(board, player);
+            break;
+        }
+        case CMD_FORWARD:
+        {
+            nextPosition = getNextForwardPosition(player);
+            nextPlayerMove = movePlayerForward(board, player);
+
+            switch(nextPlayerMove)
+            {
+                case PLAYER_MOVED:
+                {
+                    updatePosition(player, nextPosition);
+                    gameHandler(board, player);
+                    break;
+                }
+                case CELL_BLOCKED:
+                {
+                    printf("\n\nUnable to move - cell is blocked.\n\n");
+                    gameHandler(board, player);
+                    break;
+                }
+                case OUTSIDE_BOUNDS:
+                {
+                    printf("\n\nUnable to move - outside bounds.\n\n");
+                    gameHandler(board, player);
+                    break;
+                }
+            }
+            break;
+        }
+    }
+
+    return;
+}
+
 
 Player playerInit(InputInfo inputInfo, Cell board[BOARD_HEIGHT][BOARD_WIDTH])
 {
@@ -344,7 +432,7 @@ InputInfo parseUserMenuInput(int stage)
     splittedInput = strtok(input, " ");
 
     /* Do the first judgement to see if it's "load" or "quit" */
-    if(strcmp(&splittedInput[0], "load") == 0)
+    if(strcmp(&splittedInput[0], "load") == 0 && stage != 4)
     {
         return parseLoadCommand(splittedInput);
     }
@@ -358,6 +446,21 @@ InputInfo parseUserMenuInput(int stage)
     {
         return parseInitCommand(splittedInput);
     }
+    else if((strcmp(&splittedInput[0], "forward") == 0 || strcmp(&splittedInput[0], "f") == 0) && stage == 4)
+    {
+        inputInfo.commandInfo = CMD_FORWARD;
+        return inputInfo;
+    }
+    else if((strcmp(&splittedInput[0], "turn_left") == 0 || strcmp(&splittedInput[0], "l") == 0) && stage == 4)
+    {
+        inputInfo.commandInfo = CMD_TURN_LEFT;
+        return inputInfo;
+    }
+    else if((strcmp(&splittedInput[0], "turn_right") == 0 || strcmp(&splittedInput[0], "r") == 0) && stage == 4)
+    {
+        inputInfo.commandInfo = CMD_TURN_RIGHT;
+        return inputInfo;
+    }
     else
     {
         inputInfo.commandInfo = CMD_ERROR;
@@ -365,5 +468,3 @@ InputInfo parseUserMenuInput(int stage)
         return inputInfo;
     }
 }
-
-

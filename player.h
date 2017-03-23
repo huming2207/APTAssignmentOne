@@ -87,4 +87,5 @@ void updatePosition(Player * player, Position position);
  */
 void displayDirection(Direction direction);
 
+
 #endif

@@ -34,21 +34,25 @@ Position getNextForwardPosition(const Player * player)
 {
     Position position;
 
+    position.x = 0;
+    position.y = 0;
+
     switch(player->direction)
     {
         /* moving north just minus 1 of Y value */
         case NORTH:
         {
-            position.x = player->position.x;
             position.y = player->position.y - 1;
+            position.x = player->position.x;
             break;
         }
 
         /* moving north just plus 1 of Y value */
         case SOUTH:
         {
-            position.x = player->position.x;
             position.y = player->position.y + 1;
+            position.x = player->position.x;
+            break;
         }
 
         /* moving north just plus 1 of X value */
@@ -56,6 +60,7 @@ Position getNextForwardPosition(const Player * player)
         {
             position.x = player->position.x + 1;
             position.y = player->position.y;
+            break;
         }
 
         /* moving north just minus 1 of X value */
@@ -63,6 +68,7 @@ Position getNextForwardPosition(const Player * player)
         {
             position.x = player->position.x - 1;
             position.y = player->position.y;
+            break;
         }
 
         /* ...it's useless for another default case, just use it to let the clang compiler warnings shut up, lol. */
@@ -70,6 +76,7 @@ Position getNextForwardPosition(const Player * player)
         {
             position.x = player->position.x;
             position.y = player->position.y;
+            break;
         }
     }
 
