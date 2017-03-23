@@ -60,7 +60,7 @@ void mainMenu()
         /* Char "3" in ASCII is 51 */
         case 51:
         {
-            break;
+            exit(0);
         }
 
         default:

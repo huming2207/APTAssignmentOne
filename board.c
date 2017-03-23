@@ -228,21 +228,21 @@ Player playerInit(InputInfo inputInfo)
         directionString[strDestIndex] = inputInfo.initInput[strSourceIndex];
     }
 
-    if(strcmp(directionString, "east") == 0)
+    if(strcmp(directionString, DIRECTION_EAST) == 0)
     {
-        player.direction = EAST;
+        initialisePlayer(&player, &inputInfo.position, EAST);
     }
-    else if(strcmp(directionString, "south") == 0)
+    else if(strcmp(directionString, DIRECTION_SOUTH) == 0)
     {
-        player.direction = SOUTH;
+        initialisePlayer(&player, &inputInfo.position, SOUTH);
     }
-    else if(strcmp(directionString, "west") == 0)
+    else if(strcmp(directionString, DIRECTION_WEST) == 0)
     {
-        player.direction = WEST;
+        initialisePlayer(&player, &inputInfo.position, WEST);
     }
-    else if(strcmp(directionString, "north") == 0)
+    else if(strcmp(directionString, DIRECTION_NORTH) == 0)
     {
-        player.direction = NORTH;
+        initialisePlayer(&player, &inputInfo.position, NORTH);
     }
 
     return player;
@@ -279,6 +279,10 @@ InputInfo parseLoadCommand(char* splittedInput)
             return inputInfo;
         }
     }
+
+    /* Yet another useless stuff to keep the compiler be quiet. */
+    inputInfo.commandInfo = CMD_ERROR;
+    return inputInfo;
 }
 
 InputInfo parseInitCommand(char* splittedInput)
