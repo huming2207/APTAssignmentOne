@@ -131,7 +131,7 @@ InputInfo parseLoadCommand(char* splittedInput);
 /**
  * Initialize a player from an "InputInfo"
  */
-Player playerInit(InputInfo inputInfo);
+Player playerInit(InputInfo inputInfo, Cell board[BOARD_HEIGHT][BOARD_WIDTH]);
 
 void startGame(Cell board[BOARD_HEIGHT][BOARD_WIDTH], InputInfo inputInfo);
 

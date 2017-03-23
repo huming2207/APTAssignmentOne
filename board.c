@@ -201,7 +201,7 @@ void startGame(Cell board[BOARD_HEIGHT][BOARD_WIDTH], InputInfo inputInfo)
 {
     Player player;
 
-    player = playerInit(inputInfo);
+    player = playerInit(inputInfo, board);
     if(placePlayer(board, player.position) == TRUE)
     {
         displayBoard(board, &player);
@@ -214,7 +214,7 @@ void startGame(Cell board[BOARD_HEIGHT][BOARD_WIDTH], InputInfo inputInfo)
     }
 }
 
-Player playerInit(InputInfo inputInfo)
+Player playerInit(InputInfo inputInfo, Cell board[BOARD_HEIGHT][BOARD_WIDTH])
 {
     Player player;
     int strSourceIndex;
@@ -244,9 +244,13 @@ Player playerInit(InputInfo inputInfo)
     {
         initialisePlayer(&player, &inputInfo.position, NORTH);
     }
+    else
+    {
+        printf("\n\nInvalid input\n\n");
+        loadBoard(NULL, board);
+    }
 
     return player;
-
 }
 
 InputInfo parseLoadCommand(char* splittedInput)
