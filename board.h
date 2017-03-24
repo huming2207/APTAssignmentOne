@@ -145,11 +145,6 @@ void gameHandler(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player* player);
 void startGame(Cell board[BOARD_HEIGHT][BOARD_WIDTH], InputInfo inputInfo);
 
 /**
- * Remove the arrow array from the board (to refresh the player position in the board)
- */
-void removePlayer(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Position position);
-
-/**
  * Copy a board to another
  */
 void copyBoard(Cell* destBoard, Cell* sourceBoard);

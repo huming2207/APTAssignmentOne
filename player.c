@@ -85,7 +85,8 @@ Position getNextForwardPosition(const Player * player)
 
 void updatePosition(Player * player, Position position)
 {
-    /* Don't know what this function actually used for... */
+    /* Don't know what this function actually used for,
+     * but I still put something in it, even it is just a single line... */
     player->position = position;
 }
 

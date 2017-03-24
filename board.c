@@ -127,7 +127,7 @@ Boolean placePlayer(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Position position)
 {
     int heightIndex, widthIndex;
 
-    if(board[position.y][position.x] != BLOCKED && position.x < BOARD_WIDTH && position.y < BOARD_HEIGHT)
+    if(position.x < BOARD_WIDTH && position.y < BOARD_HEIGHT)
     {
         /* Remove all players before assign the player position */
         for(heightIndex = 0; heightIndex < BOARD_HEIGHT; heightIndex++)
@@ -140,7 +140,7 @@ Boolean placePlayer(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Position position)
                 }
             }
         }
-
+        
         board[position.y][position.x] = PLAYER;
         return TRUE;
     }
@@ -150,17 +150,15 @@ Boolean placePlayer(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Position position)
     }
 }
 
-void removePlayer(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Position position)
-{
-    board[position.y][position.x] = EMPTY;
-}
 
 PlayerMove movePlayerForward(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player)
 {
     Position position;
     position = getNextForwardPosition(player);
 
-    if(player->position.x > BOARD_HEIGHT || player->position.y > BOARD_WIDTH)
+    /* Step 1, detect if the cell has been occupied or out of bound */
+    if(position.x > BOARD_HEIGHT || position.y > BOARD_WIDTH ||
+            position.x < 0 || position.y < 0)
     {
         return OUTSIDE_BOUNDS;
     }
@@ -170,7 +168,17 @@ PlayerMove movePlayerForward(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * pla
     }
     else
     {
-        return PLAYER_MOVED;
+        updatePosition(player, position);
+
+        /*  */
+        if(placePlayer(board, player->position) == TRUE)
+        {
+            return PLAYER_MOVED;
+        }
+        else
+        {
+            return OUTSIDE_BOUNDS;
+        }
     }
 }
 
@@ -242,7 +250,6 @@ void startGame(Cell board[BOARD_HEIGHT][BOARD_WIDTH], InputInfo inputInfo)
 void gameHandler(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player* player)
 {
     InputInfo inputInfo;
-    Position nextPosition;
     PlayerMove nextPlayerMove;
 
     displayBoard(board, player);
@@ -270,14 +277,12 @@ void gameHandler(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player* player)
         }
         case CMD_FORWARD:
         {
-            nextPosition = getNextForwardPosition(player);
             nextPlayerMove = movePlayerForward(board, player);
 
             switch(nextPlayerMove)
             {
                 case PLAYER_MOVED:
                 {
-                    updatePosition(player, nextPosition);
                     gameHandler(board, player);
                     break;
                 }
