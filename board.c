@@ -193,10 +193,12 @@ void displayBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player)
         printf("%d|", boardFirstRow);
     }
 
-    /* print for each row and each element appended, i.e. "|0 to 9| | | | | | | | | | |" */
+    /* print row header, i.e. "|0 to 9|" */
     for(boardHeight = 0; boardHeight <= (BOARD_HEIGHT - 1); boardHeight++)
     {
         printf("\n|%d|", boardHeight);
+
+        /* print for each row and each element appended, i.e. "| | | | | | | | | | |" */
         for(boardWidth = 0; boardWidth <= (BOARD_WIDTH - 1); boardWidth++)
         {
             /*
@@ -209,6 +211,7 @@ void displayBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player)
                 case BLOCKED: printf("%s|", BLOCKED_OUTPUT); break;
                 case PLAYER:
                 {
+                    /* In some occasions the Player can be NULL, so I need to add something to handle this. */
                     if(player != NULL)
                     {
                         /* print player by pre-defined direction */
@@ -219,6 +222,11 @@ void displayBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * player)
                             case WEST: printf("%s|", DIRECTION_ARROW_OUTPUT_WEST); break;
                             case NORTH: printf("%s|", DIRECTION_ARROW_OUTPUT_NORTH); break;
                         }
+                    }
+                    else
+                    {
+                        /* Fill another empty space into the cell */
+                        printf("%s|", EMPTY_OUTPUT); break;
                     }
                     break;
                 }
@@ -321,66 +329,42 @@ void gameHandler(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player* player)
 Player playerInit(InputInfo inputInfo, Cell board[BOARD_HEIGHT][BOARD_WIDTH])
 {
     Player player;
-    int strSourceIndex;
-    int strDestIndex;
-    char directionString[6];
+
     player.position = inputInfo.position;
-
-    for(strSourceIndex = 4; strSourceIndex <= 9; strSourceIndex++)
-    {
-        strDestIndex = strSourceIndex - 4;
-        directionString[strDestIndex] = inputInfo.initInput[strSourceIndex];
-    }
-
-    if(strcmp(directionString, DIRECTION_EAST) == 0)
-    {
-        initialisePlayer(&player, &inputInfo.position, EAST);
-    }
-    else if(strcmp(directionString, DIRECTION_SOUTH) == 0)
-    {
-        initialisePlayer(&player, &inputInfo.position, SOUTH);
-    }
-    else if(strcmp(directionString, DIRECTION_WEST) == 0)
-    {
-        initialisePlayer(&player, &inputInfo.position, WEST);
-    }
-    else if(strcmp(directionString, DIRECTION_NORTH) == 0)
-    {
-        initialisePlayer(&player, &inputInfo.position, NORTH);
-    }
-    else
-    {
-        loadBoard(NULL, board);
-    }
+    player.direction = inputInfo.direction;
 
     return player;
 }
 
-InputInfo parseLoadCommand(char* splittedInput)
+InputInfo parseLoadCommand(char* splitInput)
 {
+    /**
+     * Parse "load" command, if 1 then load the first board, if 2 then load second board.
+     */
+
     InputInfo inputInfo;
 
     /* Wait and have a look at the next char, should be 1 or 2, after processing, jump out from the while loop */
-    while (splittedInput != NULL)
+    while (splitInput != NULL)
     {
-        splittedInput = strtok (NULL, " ");
-        if(strcmp(&splittedInput[0], "1") == 0)
+        splitInput = strtok (NULL, " ");
+        if(strcmp(&splitInput[0], "1") == 0)
         {
-            splittedInput = NULL;
+            splitInput = NULL;
             inputInfo.commandInfo = CMD_LOAD;
             inputInfo.boardToLoad = 1;
             return inputInfo;
         }
-        else if(strcmp(&splittedInput[0], "2") == 0)
+        else if(strcmp(&splitInput[0], "2") == 0)
         {
-            splittedInput = NULL;
+            splitInput = NULL;
             inputInfo.commandInfo = CMD_LOAD;
             inputInfo.boardToLoad = 2;
             return inputInfo;
         }
         else
         {
-            splittedInput = NULL;
+            splitInput = NULL;
             inputInfo.commandInfo = CMD_ERROR;
             printf("\n\nInvalid input\n\n");
             return inputInfo;
@@ -392,34 +376,80 @@ InputInfo parseLoadCommand(char* splittedInput)
     return inputInfo;
 }
 
-InputInfo parseInitCommand(char* splittedInput)
+InputInfo parseInitCommand(char* splitInput)
 {
+    /**
+    * "init" contains a group of arguments
+    *
+    *  The format is: PosX,PosY,Direction
+    *  For example: 1,2,south
+    *
+    *  As it shown above, the first two are digits, so I need to parse into int type;
+    *  then later on, the direction phrase will be cut and parse separately.
+    */
+
     InputInfo inputInfo;
     char initString[15];
+    char initArgument[15];
+    int strSourceIndex;
+    int strDestIndex;
+    char directionString[6];
 
-    while (splittedInput != NULL)
+    while (splitInput != NULL)
     {
-        splittedInput = strtok (NULL, " ");
-        strcpy(initString, &splittedInput[0]);
+        splitInput = strtok (NULL, " ");
+        strcpy(initString, &splitInput[0]);
 
         if(initString[1] == ',' || initString[3] == ',')
         {
-            splittedInput = NULL;
+            splitInput = NULL;
             inputInfo.commandInfo = CMD_INIT;
             inputInfo.position.x = initString[0] - '0'; /* minus '0' to get the real digit (based on ASCII, '0' is 48)*/
             inputInfo.position.y = initString[2] - '0'; /* minus '0' to get the real digit (based on ASCII, '0' is 48)*/
-            strcpy(inputInfo.initInput, initString);
+            strcpy(initArgument, initString);
+
+            /* Parse direction to inputInfo, cut and move the argument phrase first, then parse. */
+            for(strSourceIndex = 4; strSourceIndex <= 9; strSourceIndex++)
+            {
+                strDestIndex = strSourceIndex - 4;
+                directionString[strDestIndex] = initArgument[strSourceIndex];
+            }
+
+            if(strcmp(directionString, DIRECTION_EAST) == 0)
+            {
+                inputInfo.direction = EAST;
+            }
+            else if(strcmp(directionString, DIRECTION_SOUTH) == 0)
+            {
+                inputInfo.direction = SOUTH;
+            }
+            else if(strcmp(directionString, DIRECTION_WEST) == 0)
+            {
+                inputInfo.direction = WEST;
+            }
+            else if(strcmp(directionString, DIRECTION_NORTH) == 0)
+            {
+                inputInfo.direction = NORTH;
+            }
+            else
+            {
+                inputInfo.commandInfo = CMD_ERROR;
+                printf("\n\nInvalid input\n\n");
+                return inputInfo;
+            }
+
             return inputInfo;
         }
         else
         {
-            splittedInput = NULL;
+            splitInput = NULL;
             inputInfo.commandInfo = CMD_ERROR;
             printf("\n\nInvalid input\n\n");
             return inputInfo;
         }
     }
 
+    /* Useless, just for shut up the compiler warnings. */
     inputInfo.commandInfo = CMD_ERROR;
     printf("\n\nInvalid input\n\n");
     return inputInfo;
@@ -430,7 +460,7 @@ InputInfo parseUserMenuInput(int stage)
 {
     InputInfo inputInfo;
     char input[17];
-    char* splittedInput;
+    char* splitInput;
 
     /* Get user input */
     getUserInputString(input, 15);
@@ -444,34 +474,42 @@ InputInfo parseUserMenuInput(int stage)
     }
 
     /* Do a string split, get the first string */
-    splittedInput = strtok(input, " ");
+    splitInput = strtok(input, " ");
 
-    /* Do the first judgement to see if it's "load" or "quit" */
-    if(strcmp(&splittedInput[0], "load") == 0 && stage != 4)
+    /**
+     * User command parsing section
+     * "load"               -> parseLoadCommand(splitInput)
+     * "quit"               -> Return a CMD_QUIT information
+     * "init"               -> parseInitCommand(splitInput)
+     * "forward" and "f"    -> Return a CMD_FORWARD information
+     * "turn_left" and "l"  -> Return a CMD_TURN_LEFT information
+     * "turn_right" and "r" -> Return a CMD_TURN_RIGHT information
+     * other invalid stuff  -> Return a CMD_ERROR information
+     */
+    if(strcmp(&splitInput[0], "load") == 0 && stage != 4)
     {
-        return parseLoadCommand(splittedInput);
+        return parseLoadCommand(splitInput);
     }
-    else if(strcmp(&splittedInput[0], "quit") == 0)
+    else if(strcmp(&splitInput[0], "quit") == 0)
     {
-        printf("\n");
         inputInfo.commandInfo = CMD_QUIT;
         return inputInfo;
     }
-    else if(strcmp(&splittedInput[0], "init") == 0 && stage == 3)
+    else if(strcmp(&splitInput[0], "init") == 0 && stage == 3)
     {
-        return parseInitCommand(splittedInput);
+        return parseInitCommand(splitInput);
     }
-    else if((strcmp(&splittedInput[0], "forward") == 0 || strcmp(&splittedInput[0], "f") == 0) && stage == 4)
+    else if((strcmp(&splitInput[0], "forward") == 0 || strcmp(&splitInput[0], "f") == 0) && stage == 4)
     {
         inputInfo.commandInfo = CMD_FORWARD;
         return inputInfo;
     }
-    else if((strcmp(&splittedInput[0], "turn_left") == 0 || strcmp(&splittedInput[0], "l") == 0) && stage == 4)
+    else if((strcmp(&splitInput[0], "turn_left") == 0 || strcmp(&splitInput[0], "l") == 0) && stage == 4)
     {
         inputInfo.commandInfo = CMD_TURN_LEFT;
         return inputInfo;
     }
-    else if((strcmp(&splittedInput[0], "turn_right") == 0 || strcmp(&splittedInput[0], "r") == 0) && stage == 4)
+    else if((strcmp(&splitInput[0], "turn_right") == 0 || strcmp(&splitInput[0], "r") == 0) && stage == 4)
     {
         inputInfo.commandInfo = CMD_TURN_RIGHT;
         return inputInfo;

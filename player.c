@@ -92,5 +92,12 @@ void updatePosition(Player * player, Position position)
 
 void displayDirection(Direction direction)
 {
-
+    /* Also don't know where this function used for, seems it's not necessary to call at all! */
+    switch(direction)
+    {
+        case EAST: printf("Direction: East\n"); break;
+        case SOUTH: printf("Direction: South\n"); break;
+        case WEST: printf("Direction: West\n"); break;
+        case NORTH: printf("Direction North\n"); break;
+    }
 }

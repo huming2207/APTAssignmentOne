@@ -44,8 +44,8 @@ typedef struct inputInfo
 {
     CommandInfo commandInfo;
     Position position;
+    Direction direction;
     int boardToLoad;
-    char initInput[15];
 } InputInfo;
 
 /**
