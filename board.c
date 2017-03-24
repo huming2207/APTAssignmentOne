@@ -140,7 +140,7 @@ Boolean placePlayer(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Position position)
                 }
             }
         }
-        
+
         board[position.y][position.x] = PLAYER;
         return TRUE;
     }
@@ -157,7 +157,7 @@ PlayerMove movePlayerForward(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * pla
     position = getNextForwardPosition(player);
 
     /* Step 1, detect if the cell has been occupied or out of bound */
-    if(position.x > BOARD_HEIGHT || position.y > BOARD_WIDTH ||
+    if(position.x >= BOARD_HEIGHT || position.y >= BOARD_WIDTH ||
             position.x < 0 || position.y < 0)
     {
         return OUTSIDE_BOUNDS;
@@ -169,8 +169,6 @@ PlayerMove movePlayerForward(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player * pla
     else
     {
         updatePosition(player, position);
-
-        /*  */
         if(placePlayer(board, player->position) == TRUE)
         {
             return PLAYER_MOVED;
@@ -283,6 +281,8 @@ void gameHandler(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player* player)
             {
                 case PLAYER_MOVED:
                 {
+                    printf("\n\nPlayer moved.\n\n");
+                    player->moves = player->moves + 1;
                     gameHandler(board, player);
                     break;
                 }
@@ -299,6 +299,17 @@ void gameHandler(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player* player)
                     break;
                 }
             }
+            break;
+        }
+        case CMD_QUIT:
+        {
+            printf("\n\nTotal player moves: %d\n\n", player->moves);
+            mainMenu();
+            break;
+        }
+        default:
+        {
+            gameHandler(board, player);
             break;
         }
     }
@@ -339,7 +350,6 @@ Player playerInit(InputInfo inputInfo, Cell board[BOARD_HEIGHT][BOARD_WIDTH])
     }
     else
     {
-        printf("\n\nInvalid input\n\n");
         loadBoard(NULL, board);
     }
 
