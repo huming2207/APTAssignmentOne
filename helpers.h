@@ -35,7 +35,7 @@ void readRestOfLine();
 /**
  * The function to get user input string
  */
-Boolean getUserInputString(char* inputResult, int32_t expectedLength);
+Boolean getUserInputString(char* inputResult, int expectedLength);
 
 /**
  * The function to get user input char
