@@ -4,13 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/Users/Jackson/Projects/APTAssignment/board.c" "/Users/Jackson/Projects/APTAssignment/cmake-build-debug/CMakeFiles/APTAssignment.dir/board.c.o"
-  "/Users/Jackson/Projects/APTAssignment/carboard.c" "/Users/Jackson/Projects/APTAssignment/cmake-build-debug/CMakeFiles/APTAssignment.dir/carboard.c.o"
-  "/Users/Jackson/Projects/APTAssignment/game.c" "/Users/Jackson/Projects/APTAssignment/cmake-build-debug/CMakeFiles/APTAssignment.dir/game.c.o"
-  "/Users/Jackson/Projects/APTAssignment/helpers.c" "/Users/Jackson/Projects/APTAssignment/cmake-build-debug/CMakeFiles/APTAssignment.dir/helpers.c.o"
-  "/Users/Jackson/Projects/APTAssignment/player.c" "/Users/Jackson/Projects/APTAssignment/cmake-build-debug/CMakeFiles/APTAssignment.dir/player.c.o"
+  "C:/Users/humin/Documents/Project/APTAssignmentOne/board.c" "C:/Users/humin/Documents/Project/APTAssignmentOne/cmake-build-debug/CMakeFiles/APTAssignment.dir/board.c.obj"
+  "C:/Users/humin/Documents/Project/APTAssignmentOne/carboard.c" "C:/Users/humin/Documents/Project/APTAssignmentOne/cmake-build-debug/CMakeFiles/APTAssignment.dir/carboard.c.obj"
+  "C:/Users/humin/Documents/Project/APTAssignmentOne/game.c" "C:/Users/humin/Documents/Project/APTAssignmentOne/cmake-build-debug/CMakeFiles/APTAssignment.dir/game.c.obj"
+  "C:/Users/humin/Documents/Project/APTAssignmentOne/helpers.c" "C:/Users/humin/Documents/Project/APTAssignmentOne/cmake-build-debug/CMakeFiles/APTAssignment.dir/helpers.c.obj"
+  "C:/Users/humin/Documents/Project/APTAssignmentOne/player.c" "C:/Users/humin/Documents/Project/APTAssignmentOne/cmake-build-debug/CMakeFiles/APTAssignment.dir/player.c.obj"
   )
-set(CMAKE_C_COMPILER_ID "AppleClang")
+set(CMAKE_C_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH

@@ -59,7 +59,6 @@ void initialiseBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH])
     /* If input returns an error, try again. */
     if(inputInfo.commandInfo == CMD_ERROR)
     {
-        printf("\n\nInvalid input\n\n");
         initialiseBoard(board);
     }
 
@@ -95,7 +94,6 @@ void loadBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Cell boardToLoad[BOARD_HEI
 
     if(inputInfo.commandInfo == CMD_ERROR)
     {
-        printf("\n\nInvalid input\n\n");
         loadBoard(board, boardToLoad);
         return;
     }
@@ -348,6 +346,19 @@ InputInfo parseLoadCommand(char* splitInput)
     while (splitInput != NULL)
     {
         splitInput = strtok (NULL, " ");
+
+        /**
+         * If the splitInput is NULL, then something from the input must be wrong formatted.
+         * Stop & return error instead.
+         * */
+        if(&splitInput[0] == NULL)
+        {
+            splitInput = NULL;
+            inputInfo.commandInfo = CMD_ERROR;
+            printf("\n\nInvalid input\n\n");
+            return inputInfo;
+        }
+
         if(strcmp(&splitInput[0], "1") == 0)
         {
             splitInput = NULL;
@@ -398,6 +409,19 @@ InputInfo parseInitCommand(char* splitInput)
     while (splitInput != NULL)
     {
         splitInput = strtok (NULL, " ");
+
+        /**
+         * If the splitInput is NULL, then something from the input must be wrong formatted.
+         * Stop & return error instead.
+         * */
+        if(&splitInput[0] == NULL)
+        {
+            splitInput = NULL;
+            inputInfo.commandInfo = CMD_ERROR;
+            printf("\n\nInvalid input\n\n");
+            return inputInfo;
+        }
+
         strcpy(initString, &splitInput[0]);
 
         if(initString[1] == ',' || initString[3] == ',')

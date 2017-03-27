@@ -1,11 +1,13 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/APTAssignment.dir/player.c.o"
-  "CMakeFiles/APTAssignment.dir/helpers.c.o"
-  "CMakeFiles/APTAssignment.dir/game.c.o"
-  "CMakeFiles/APTAssignment.dir/carboard.c.o"
-  "CMakeFiles/APTAssignment.dir/board.c.o"
+  "CMakeFiles/APTAssignment.dir/player.c.obj"
+  "CMakeFiles/APTAssignment.dir/helpers.c.obj"
+  "CMakeFiles/APTAssignment.dir/game.c.obj"
+  "CMakeFiles/APTAssignment.dir/carboard.c.obj"
+  "CMakeFiles/APTAssignment.dir/board.c.obj"
   "APTAssignment.pdb"
-  "APTAssignment"
+  "APTAssignment.exe"
+  "APTAssignment.exe.manifest"
+  "libAPTAssignment.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.
