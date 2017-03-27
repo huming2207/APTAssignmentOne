@@ -118,3 +118,5 @@ dkms.conf
 *.lai
 
 # Executables
+cmake-build-debug/
+.idea/

@@ -1,3 +1,0 @@
-C:/Users/humin/Documents/Project/APTAssignmentOne/cmake-build-debug/CMakeFiles/APTAssignment.dir
-C:/Users/humin/Documents/Project/APTAssignmentOne/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/humin/Documents/Project/APTAssignmentOne/cmake-build-debug/CMakeFiles/rebuild_cache.dir
