@@ -328,6 +328,9 @@ Player playerInit(InputInfo inputInfo, Cell board[BOARD_HEIGHT][BOARD_WIDTH])
 {
     Player player;
 
+    /* Player moves must be set to zero first, otherwise some compilers will init it with some strange values */
+    player.moves = 0;
+
     player.position = inputInfo.position;
     player.direction = inputInfo.direction;
 
@@ -359,6 +362,7 @@ InputInfo parseLoadCommand(char* splitInput)
             return inputInfo;
         }
 
+        /* Parse starts */
         if(strcmp(&splitInput[0], "1") == 0)
         {
             splitInput = NULL;
@@ -422,6 +426,7 @@ InputInfo parseInitCommand(char* splitInput)
             return inputInfo;
         }
 
+        /* Parse starts if everything goes okay */
         strcpy(initString, &splitInput[0]);
 
         if(initString[1] == ',' || initString[3] == ',')
