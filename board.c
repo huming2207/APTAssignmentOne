@@ -56,12 +56,6 @@ void initialiseBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH])
     /* Set stage to Stage #2 */
     inputInfo = parseUserMenuInput(2);
 
-    /* If input returns an error, try again. */
-    if(inputInfo.commandInfo == CMD_ERROR)
-    {
-        initialiseBoard(board);
-    }
-
     switch(inputInfo.commandInfo)
     {
         case CMD_LOAD:
@@ -74,6 +68,7 @@ void initialiseBoard(Cell board[BOARD_HEIGHT][BOARD_WIDTH])
             }
         }
 
+        case CMD_ERROR: initialiseBoard(board); break;
         case CMD_QUIT: mainMenu(); break;
         default: break;
     }
