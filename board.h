@@ -144,9 +144,4 @@ void gameHandler(Cell board[BOARD_HEIGHT][BOARD_WIDTH], Player* player);
  */
 void startGame(Cell board[BOARD_HEIGHT][BOARD_WIDTH], InputInfo inputInfo);
 
-/**
- * Copy a board to another
- */
-void copyBoard(Cell* destBoard, Cell* sourceBoard);
-
 #endif

@@ -332,6 +332,12 @@ Player playerInit(InputInfo inputInfo, Cell board[BOARD_HEIGHT][BOARD_WIDTH])
     return player;
 }
 
+/**
+ * Board input operation related code starts below.
+ *
+ * Read the input command and return something necessary for further actions.
+ */
+
 InputInfo parseLoadCommand(char* splitInput)
 {
     /**
