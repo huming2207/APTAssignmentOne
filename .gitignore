@@ -120,3 +120,6 @@ dkms.conf
 # Executables
 cmake-build-debug/
 .idea/
+
+# DS_Store in Mac
+.DS_Store
