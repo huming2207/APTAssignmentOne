@@ -516,30 +516,30 @@ InputInfo parseUserMenuInput(int stage)
      * "turn_right" and "r" -> Return a CMD_TURN_RIGHT information
      * other invalid stuff  -> Return a CMD_ERROR information
      */
-    if(strcmp(&splitInput[0], "load") == 0 && stage != 4)
+    if(strcmp(&splitInput[0], COMMAND_LOAD) == 0 && stage != 4)
     {
         return parseLoadCommand(splitInput);
     }
-    else if(strcmp(&splitInput[0], "quit") == 0)
+    else if(strcmp(&splitInput[0], COMMAND_QUIT) == 0)
     {
         inputInfo.commandInfo = CMD_QUIT;
         return inputInfo;
     }
-    else if(strcmp(&splitInput[0], "init") == 0 && stage == 3)
+    else if(strcmp(&splitInput[0], COMMAND_INIT) == 0 && stage == 3)
     {
         return parseInitCommand(splitInput);
     }
-    else if((strcmp(&splitInput[0], "forward") == 0 || strcmp(&splitInput[0], "f") == 0) && stage == 4)
+    else if((strcmp(&splitInput[0], COMMAND_FORWARD) == 0 || strcmp(&splitInput[0], COMMAND_FORWARD_SHORTCUT) == 0) && stage == 4)
     {
         inputInfo.commandInfo = CMD_FORWARD;
         return inputInfo;
     }
-    else if((strcmp(&splitInput[0], "turn_left") == 0 || strcmp(&splitInput[0], "l") == 0) && stage == 4)
+    else if((strcmp(&splitInput[0], COMMAND_TURN_LEFT) == 0 || strcmp(&splitInput[0], COMMAND_TURN_LEFT_SHORTCUT) == 0) && stage == 4)
     {
         inputInfo.commandInfo = CMD_TURN_LEFT;
         return inputInfo;
     }
-    else if((strcmp(&splitInput[0], "turn_right") == 0 || strcmp(&splitInput[0], "r") == 0) && stage == 4)
+    else if((strcmp(&splitInput[0], COMMAND_TURN_RIGHT) == 0 || strcmp(&splitInput[0], COMMAND_TURN_RIGHT_SHORTCUT) == 0) && stage == 4)
     {
         inputInfo.commandInfo = CMD_TURN_RIGHT;
         return inputInfo;

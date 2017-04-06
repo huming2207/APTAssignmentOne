@@ -1,6 +1,7 @@
-CC 	= clang
+CC 	= gcc
+CLANG_C = clang
 EXEC 	= CarBoard
-CFLAG 	= -pedantic -Wall -o
+CFLAG 	= -ansi -pedantic -Wall -o
 
 all:
 	$(CC) $(CFLAG) $(EXEC) *.c
@@ -8,6 +9,11 @@ all:
 debug:
 	$(CC) -g $(CFLAG) $(EXEC) *.c
 
+clang:
+	$(CLANG_C) $(CFLAG) $(EXEC) *.c
+
+clang-debug:
+	$(CLANG_C) -g $(CFLAG) $(EXEC) *.c
+
 clean:
-	rm -rf *.o
 	rm -rf $(EXEC)
